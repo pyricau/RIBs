@@ -42,6 +42,8 @@ dependencies {
     implementation deps.apt.javaxInject
 
     implementation deps.uber.autodisposeCoroutines
+    implementation "com.squareup.leakcanary:shark:2.10"
+    implementation "com.squareup.leakcanary:shark-graph:2.10"
     implementation deps.kotlin.coroutinesRx2
     api deps.kotlin.stdlib
     api deps.kotlin.coroutines

@@ -19,7 +19,12 @@ import android.app.Application;
 import com.uber.rib.core.ActivityDelegate;
 import com.uber.rib.core.HasActivityDelegate;
 import com.uber.rib.core.RibRefWatcher;
+import com.uber.rib.core.RouterInspector;
+import java.util.ArrayList;
+import java.util.List;
 import leakcanary.AppWatcher;
+import leakcanary.LeakCanary;
+import shark.ObjectInspector;
 
 public class SampleApplication extends Application implements HasActivityDelegate {
 
@@ -34,6 +39,14 @@ public class SampleApplication extends Application implements HasActivityDelegat
 
   /** Install leak canary for both activities and RIBs. */
   private void installLeakCanary() {
+    LeakCanary.Config config = LeakCanary.getConfig();
+    List<ObjectInspector> objectInspectors = new ArrayList<>(config.getObjectInspectors());
+    objectInspectors.add(new RouterInspector());
+    LeakCanary.setConfig(
+        config.newBuilder()
+            .objectInspectors(objectInspectors)
+            .build()
+    );
     RibRefWatcher.getInstance()
         .setReferenceWatcher(
             new RibRefWatcher.ReferenceWatcher() {
